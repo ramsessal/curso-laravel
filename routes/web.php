@@ -7,4 +7,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('posts', PostController::class);
+Route::middleware(['auth'])->group(function () {
+    Route::resource('posts', PostController::class);
+    // Todo lo que este aqui dentro requiere login
+});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
