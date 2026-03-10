@@ -16,7 +16,7 @@
         <table class="table table-striped table-hover">
             <thead><tr>
                 <th>Titulo</th><th>Autor</th>
-                <th>Estatus</th><th>Acciones</th>
+                <th>Estatus</th><th>Categoria</th><th>Acciones</th>
             </tr></thead>
             <tbody>
             @foreach($posts as $post)
@@ -26,6 +26,16 @@
                     <td><span class="badge badge-{{ $post->estatus == 'publicado' ? 'success' : 'secondary' }}">
                         {{ ucfirst($post->estatus) }}
                     </span></td>
+
+                    <td>
+                    @if($post->categoria)
+                    <span class="badge"
+                        style="background:{{ $post->categoria->color }};
+                            color:white;">
+                        {{ $post->categoria->nombre }}
+                    </span>
+                    @endif
+                </td>
                     <td><!-- botones --></td>
                 </tr>
             @endforeach

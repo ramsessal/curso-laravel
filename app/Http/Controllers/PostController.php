@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Categoria;
 
 class PostController extends Controller
 {
@@ -12,7 +13,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        // PostController@index
+        $posts = Post::with('categoria')->get();
         return view('posts.index', compact('posts'));
     }
 
@@ -21,8 +23,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
-        return view('posts.create');
+        // PostController@create
+        $categorias = Categoria::all();
+        return view('posts.create', compact('categorias'));
     }
 
     /**
@@ -35,6 +38,7 @@ class PostController extends Controller
             'contenido' => 'required|min:10',
             'autor'     => 'required',
             'estatus'   => 'required|in:borrador,publicado',
+            'categoria_id' => 'nullable|exists:categorias,id',
         ]);
 
         Post::create($validated);
