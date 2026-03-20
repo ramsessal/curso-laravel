@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Categoria;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -34,10 +35,11 @@ class PostController extends Controller
         $validated = $request->validate([
             'titulo'    => 'required|min:3',
             'contenido' => 'required|min:10',
-            'autor'     => 'required',
             'estatus'   => 'required|in:borrador,publicado',
             'categoria_id' => 'required|exists:categorias,id',
         ]);
+
+        $validated['autor'] = Auth::user()->name;
 
         Post::create($validated);
 
@@ -72,10 +74,11 @@ class PostController extends Controller
         $validated = $request->validate([
             'titulo' => 'required|min:3',
             'contenido' => 'required|min:10',
-            'autor' => 'required',
             'estatus' => 'required|in:borrador,publicado',
             'categoria_id' => 'required|exists:categorias,id',
         ]);
+
+        $validated['autor'] = Auth::user()->name;
 
         $post = Post::findOrFail($id);
         $post->update($validated);

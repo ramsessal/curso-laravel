@@ -31,13 +31,6 @@ class RegisterController extends Controller
     protected $redirectTo = '/posts';
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-  
-
-    /**
      * Get a validator for an incoming registration request.
      *
      * @return \Illuminate\Contracts\Validation\Validator
