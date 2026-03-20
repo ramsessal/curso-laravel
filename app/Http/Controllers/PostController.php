@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Categoria;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -12,7 +14,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::with('categoria')->get();
         return view('posts.index', compact('posts'));
     }
 
@@ -21,8 +23,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
-        return view('posts.create');
+        $categorias = Categoria::all();
+        return view('posts.create', compact('categorias'));
     }
 
     /**
@@ -33,9 +35,11 @@ class PostController extends Controller
         $validated = $request->validate([
             'titulo'    => 'required|min:3',
             'contenido' => 'required|min:10',
-            'autor'     => 'required',
             'estatus'   => 'required|in:borrador,publicado',
+            'categoria_id' => 'required|exists:categorias,id',
         ]);
+
+        $validated['autor'] = Auth::user()->name;
 
         Post::create($validated);
 
@@ -48,7 +52,8 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $post = Post::with('categoria')->findOrFail($id);
+        return view('posts.show', compact('post'));
     }
 
     /**
@@ -56,7 +61,9 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $categorias = Categoria::all();
+        return view('posts.edit', compact('post', 'categorias'));
     }
 
     /**
@@ -64,7 +71,19 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'titulo' => 'required|min:3',
+            'contenido' => 'required|min:10',
+            'estatus' => 'required|in:borrador,publicado',
+            'categoria_id' => 'required|exists:categorias,id',
+        ]);
+
+        $validated['autor'] = Auth::user()->name;
+
+        $post = Post::findOrFail($id);
+        $post->update($validated);
+
+        return redirect()->route('posts.index')->with('success', 'Post actualizado exitosamente.');
     }
 
     /**
@@ -72,6 +91,9 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $post->delete();
+
+        return redirect()->route('posts.index')->with('success', 'Post eliminado exitosamente.');
     }
 }

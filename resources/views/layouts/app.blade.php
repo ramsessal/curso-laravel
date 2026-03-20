@@ -28,7 +28,7 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <span class="nav-link"><i class="fas fa-blog"></i> Mi Blog</span>
+                <a href="/" class="nav-link"><i class="fas fa-blog"></i> Mi Blog</a>
             </li>
         </ul>
     </nav>
