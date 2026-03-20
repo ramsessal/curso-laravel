@@ -2,6 +2,11 @@
 @section('title', 'Posts')
 
 @section('content')
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">Posts</h3>
@@ -16,18 +21,34 @@
         <table class="table table-striped table-hover">
             <thead><tr>
                 <th>Titulo</th><th>Autor</th>
-                <th>Estatus</th><th>Acciones</th>
+                <th>Categoría</th><th>Estatus</th><th>Acciones</th>
             </tr></thead>
             <tbody>
             @foreach($posts as $post)
                 <tr>
                     <td>{{ $post->titulo }}</td>
                     <td>{{ $post->autor }}</td>
+                    <td><span class="badge" style="background-color: {{ $post->categoria->color }}">{{ $post->categoria->nombre }}</span></td>
                     <td><span class="badge badge-{{ $post->estatus == 'publicado' ? 'success' : 'secondary' }}">
                         {{ ucfirst($post->estatus) }}
                     </span></td>
-                    <td><!-- botones --></td>
+                    <td>
+                        <a href="{{ route('posts.show', $post) }}" class="btn btn-info btn-sm">Ver</a>
+                        <a href="{{ route('posts.edit', $post) }}" class="btn btn-warning btn-sm">Editar</a>
+                        <form action="{{ route('posts.destroy', $post) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este post?')">Eliminar</button>
+                        </form>
+                    </td>
+
+
+ 
+
+
                 </tr>
+
+
             @endforeach
             </tbody>
         </table>
