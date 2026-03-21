@@ -12,3 +12,15 @@
         </a>
     </li>
 </ul>
+
+@auth
+<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="info">
+        <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+    </div>
+</div>
+<form method="POST" action="{{ route('logout') }}">
+    @csrf
+    <button type="submit" class="btn btn-danger btn-sm">Logout</button>
+</form>
+@endauth

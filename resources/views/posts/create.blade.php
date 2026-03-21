@@ -27,15 +27,6 @@
                     @enderror
             </div>
             <div class="form-group">
-                <label>Autor</label>
-                <input type="text" name="autor"
-                       class="form-control @error('autor') is-invalid @enderror"
-                       value="{{ old('autor') }}">
-                       @error('autor')
-                        <small class="text-danger">{{ $message }}</small>
-                       @enderror
-            </div>
-            <div class="form-group">
                 <label>Estatus</label>
                 <select name="estatus" class="form-control">
                     <option value="borrador">Borrador</option>

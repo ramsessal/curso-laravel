@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 
 class PostController extends Controller
@@ -44,12 +45,11 @@ class PostController extends Controller
         $request->validate([
             'titulo' => 'required|min:3',
             'contenido' => 'required|min:10',
-            'autor' => 'required',
             'estatus' => 'required|in:publicado,borrador',
             'categoria_id' => 'required|exists:categorias,id',
         ]);
 
-        Post::create($request->all());
+        Post::create($request->only(['titulo', 'contenido', 'estatus', 'categoria_id']) + ['autor' => Auth::user()->name]);
         return redirect()->route('posts.index')->with('success', 'Post creado exitosamente.');
     }
 
