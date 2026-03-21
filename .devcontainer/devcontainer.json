@@ -1,5 +1,5 @@
 {
-  "name": "Laravel — Sesion 7: BD y Eloquent",
+  "name": "Laravel — Sesion 9: Blog con AdminLTE",
   "image": "mcr.microsoft.com/devcontainers/php:8.2-bookworm",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
@@ -22,7 +22,7 @@
     "XDEBUG_MODE": "off"
   },
   "mounts": [
-    "source=sesion7-vendor,target=${containerWorkspaceFolder}/vendor,type=volume"
+    "source=sesion9-vendor,target=${containerWorkspaceFolder}/vendor,type=volume"
   ],
   "forwardPorts": [8000],
   "portsAttributes": {

@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# Setup — Sesion 7: Base de datos y Eloquent
+# Setup — Sesion 9: Blog con AdminLTE
 # Se ejecuta automaticamente al crear el devcontainer
 # ============================================================
 
@@ -9,7 +9,7 @@ export XDEBUG_MODE=off
 sudo phpdismod xdebug 2>/dev/null || true
 
 echo ""
-echo "Configurando entorno Laravel — Sesion 7..."
+echo "Configurando entorno Laravel — Sesion 9: Blog con AdminLTE..."
 echo ""
 
 # 1. Instalar SQLite + OPcache
@@ -69,30 +69,26 @@ else
     sed -i "s|DB_CONNECTION=sqlite|DB_CONNECTION=sqlite\nDB_DATABASE=${WORKSPACE_DIR}/database/database.sqlite|" .env
 fi
 
-# 5. Copiar archivos del proyecto directorio
-echo "[4/5] Instalando proyecto Directorio..."
+# 5. Copiar archivos del proyecto Blog
+echo "[4/5] Instalando proyecto Blog con AdminLTE..."
 PROYECTO_DIR="proyecto"
 
 if [ -d "$PROYECTO_DIR" ]; then
-    # Controller
-    cp "$PROYECTO_DIR/DirectorioController.php" app/Http/Controllers/DirectorioController.php
-
     # Rutas
     cp "$PROYECTO_DIR/web.php" routes/web.php
 
-    # Vistas
-    mkdir -p resources/views/directorio
-    cp "$PROYECTO_DIR/views/directorio/index.blade.php" resources/views/directorio/
-    cp "$PROYECTO_DIR/views/directorio/show.blade.php" resources/views/directorio/
-    cp "$PROYECTO_DIR/views/directorio/create.blade.php" resources/views/directorio/
-    cp "$PROYECTO_DIR/views/directorio/edit.blade.php" resources/views/directorio/
+    # Vistas: layout AdminLTE + welcome
+    mkdir -p resources/views/layouts
+    cp "$PROYECTO_DIR/views/layouts/app.blade.php" resources/views/layouts/
+    cp "$PROYECTO_DIR/views/layouts/sidebar.blade.php" resources/views/layouts/
+    cp "$PROYECTO_DIR/views/welcome.blade.php" resources/views/
 
-    echo "  Controller, rutas y vistas copiados correctamente"
+    echo "  Layout AdminLTE, rutas y vista welcome copiados correctamente"
 else
     echo "  AVISO: carpeta 'proyecto/' no encontrada — los archivos no se copiaron"
 fi
 
-# 6. Migraciones (solo las default de Laravel, NO la de empleados)
+# 6. Migraciones (solo las default de Laravel)
 echo "[5/5] Ejecutando migraciones base..."
 touch database/database.sqlite
 php artisan migrate --force 2>&1 || echo "Migraciones fallaron — ejecuta: php artisan migrate"
@@ -100,15 +96,15 @@ php artisan migrate --force 2>&1 || echo "Migraciones fallaron — ejecuta: php 
 # 7. Verificacion
 echo ""
 echo "============================================"
-echo "  Entorno Sesion 7 configurado con exito"
+echo "  Entorno Sesion 9 configurado con exito"
 echo "============================================"
 echo ""
 echo "  Laravel: $(php artisan --version 2>/dev/null || echo 'no detectado')"
 echo "  PHP:     $(php -v | head -1 | cut -d' ' -f2)"
 echo "  SQLite:  configurado"
 echo ""
-echo "  El directorio ya funciona con datos de ejemplo."
-echo "  Hoy lo migraremos a base de datos real."
+echo "  El layout AdminLTE ya esta instalado."
+echo "  Hoy construiremos un Blog desde cero."
 echo ""
 echo "  El servidor se inicia automaticamente."
 echo "  Codespace abrira la pagina en una nueva pestana."
