@@ -1,0 +1,36 @@
+{
+  "name": "Laravel — Sesion 9: Blog con AdminLTE",
+  "image": "mcr.microsoft.com/devcontainers/php:8.2-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "onecentlin.laravel-blade",
+        "shufo.vscode-blade-formatter"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "remoteEnv": {
+    "XDEBUG_MODE": "off"
+  },
+  "mounts": [
+    "source=sesion9-vendor,target=${containerWorkspaceFolder}/vendor,type=volume"
+  ],
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {
+      "label": "Laravel Dev Server",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "postStartCommand": "php artisan serve --host=0.0.0.0 > /dev/null 2>&1 &"
+}

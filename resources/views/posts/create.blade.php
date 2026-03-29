@@ -1,0 +1,58 @@
+@extends('layouts.app')
+@section('title', 'Nuevo Post')
+
+@section('content')
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Nuevo Post</h3>
+    </div>
+    <form action="{{ route('posts.store') }}" method="POST">
+        @csrf
+        <div class="card-body">
+            <div class="form-group">
+                <label>Titulo</label>
+                <input type="text" name="titulo"
+                       class="form-control @error('titulo') is-invalid @enderror"
+                       value="{{ old('titulo') }}">
+                       @error('titulo')
+                        <small class="text-danger">{{ $message }}</small>
+                       @enderror
+            </div>
+            <div class="form-group">
+                <label>Contenido</label>
+                <textarea name="contenido" rows="4"
+                    class="form-control @error('contenido') is-invalid @enderror">{{ old('contenido') }}</textarea>
+                    @error('contenido')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+            </div>
+            <div class="form-group">
+                <label>Estatus</label>
+                <select name="estatus" class="form-control">
+                    <option value="borrador">Borrador</option>
+                    <option value="publicado">Publicado</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Categoria</label>
+                <select name="categoria_id" class="form-control @error('categoria_id') is-invalid @enderror">
+                    <option value="">Selecciona una categoria</option>
+                    @foreach($categorias as $categoria)
+                        <option value="{{ $categoria->id }}" {{ old('categoria_id') == $categoria->id ? 'selected' : '' }}>
+                            {{ $categoria->nombre }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('categoria_id')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+        <div class="card-footer">
+            <button type="submit"
+                    class="btn btn-primary">Guardar</button>
+            <a href="{{ route('posts.index') }}"
+               class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+@endsection
